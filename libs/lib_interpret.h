@@ -8,13 +8,12 @@
 #include <ctime>
 
 #include "printer.h"
-#include "ConsolePrinter.h"
 
 class interpreter
 {
     public:
         interpreter(int i);
-        void push_back(std::shared_ptr<Printer>& );
+        void push_back(std::shared_ptr<Printer> );
         //void removeOutput(std::ostream&);
         void processStream(std::istream&);
 
@@ -27,11 +26,9 @@ class interpreter
         size_t m_bulkSize;
 };
 
-#include "lib_interpret.h" 
-
 interpreter::interpreter(int size) : m_bulkSize{static_cast<size_t>(size)}{}
 
-void interpreter::push_back(std::shared_ptr<Printer>& printer)
+void interpreter::push_back(std::shared_ptr<Printer> printer)
 {
     m_outputs.push_back(printer);
 }
@@ -40,8 +37,10 @@ void interpreter::print(std::time_t & time)
 {
     std::string stime{std::to_string(time)};
     stime=std::to_string(time);
-        for (auto outs : m_outputs)
-            outs->print( m_block, stime );
+        for (auto outs : m_outputs){
+            auto buf = std::make_shared<Bulk>(m_block, stime);
+            outs->print(buf);
+        }
         m_block.clear();
     time=0;
 }

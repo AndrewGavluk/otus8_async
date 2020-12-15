@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.2)
 
-add_executable(bulk main.cpp)
-set_target_properties(bulk PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQIRED ON)
-target_link_libraries(bulk PRIVATE libinterpret)
+add_executable(async main.cpp)
+set_target_properties(async PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQIRED ON)
+target_link_libraries(async PRIVATE libinterpret)
 
 if(MSVC)
-	target_compile_options(bulk PRIVATE /W4)
+	target_compile_options(async PRIVATE /W4)
 else()
-	target_compile_options(bulk PRIVATE -Wall -Wextra -Werror)
+	target_compile_options(async PRIVATE -Wall -Wextra -Werror)
 endif()
 
-install(TARGETS bulk RUNTIME DESTINATION bin)
+install(TARGETS async RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
