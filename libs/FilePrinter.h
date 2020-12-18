@@ -3,17 +3,41 @@
 class FilePrinter : public  Printer
 {
     public:
-        FilePrinter(std::ofstream& fstr) : m_ofstream{fstr} {};
+        FilePrinter(size_t size);
         void print(std::shared_ptr<Bulk> data) override;
-    private:
-        std::string m_filename;
-        std::ofstream& m_ofstream;
+        void printThread(size_t& threadNumber) override;
 
 };
 
-void FilePrinter::print(std::shared_ptr<Bulk>  data){
-    std::string separator;
+FilePrinter::FilePrinter(size_t size): Printer(size)
+{
+    std::shared_ptr<std::vector<std::ofstream> > streams;
+    streams->reserve(size);
+    for (size_t i = 0; i<size; ++i){
+        std::ofstream out1;
+        streams->push_back(std::move(out1));
+    }
+    Printer::initWith(streams);
+
+}
+
+// TODO : constructor for clas with streams vector
+
+void FilePrinter::print(std::shared_ptr<Bulk> data) {
+    Printer::print(data);
+}
+
+// TODO : add stream as parametr
+void FilePrinter::printThread(size_t& threadNumber){
     
+    (void)(threadNumber);
+    // TODO : 1. eof check: while not eof read bulk
+    // TODO : 2. add thread id
+    std::ofstream m_ofstream;
+    // TODO m_ofstream from vector threadNumber
+
+    auto data = getBulk();
+    std::string separator;
     m_ofstream.open(data->time + ".log");
     m_ofstream << "bulk: ";
     for (auto &str : data->bulk){
