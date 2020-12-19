@@ -28,8 +28,12 @@ void ConsolePrinter::printThread(size_t threadNumber) {
     // TODO : 1. eof check: while not eof read bulk
     // TODO : 2. add thread id
     // TODO std::cout from vector threadNumber
-
+    
+    //std::unique_lock<std::mutex>  guardGetbulk{m_mutex};
+    guardGetbulk.lock();
     auto data = getBulk();
+    guardGetbulk.unlock();
+    
     std::string separator;
     std::cout << "bulk: ";
     for (auto &str : data->bulk){

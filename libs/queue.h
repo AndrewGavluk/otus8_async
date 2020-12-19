@@ -20,8 +20,7 @@ class queueLists
         shar_line_t pop();
     private:
         std::list<shar_line_t> qList;
-        mutable std::mutex m_mutex;
-
+        mutable std::mutex m_mutex;  // TODO: check the nesessary of mutex
 };
 
 void queueLists::push(shar_line_t line )
@@ -32,7 +31,7 @@ void queueLists::push(shar_line_t line )
 
 shar_line_t queueLists::pop()
 {
-    std::lock_guard<std::mutex> lock(m_mutex);
+   std::lock_guard<std::mutex> lock(m_mutex);
    auto iter = qList.begin();
    qList.pop_front();
    return *iter;

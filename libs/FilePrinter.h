@@ -32,7 +32,10 @@ void FilePrinter::printThread(size_t threadNumber){
     std::ofstream m_ofstream;
     // TODO m_ofstream from vector threadNumber
 
+    guardGetbulk.lock();
     auto data = getBulk();
+    guardGetbulk.unlock();
+
     std::string separator;
     m_ofstream.open(data->time + ".log");
     m_ofstream << "bulk: ";
