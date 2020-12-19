@@ -14,7 +14,7 @@ class interpreter
     public:
         interpreter(int i);
         void push_back(std::shared_ptr<Printer> );
-        //void removeOutput(std::ostream&);
+        void removeOutput(std::ostream&);
         void processStream(std::istream&);
 
     protected: 
