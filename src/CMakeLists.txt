@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 
 add_executable(async main.cpp)
 set_target_properties(async PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQIRED ON)
-target_link_libraries(async PRIVATE libinterpret)
+target_link_libraries(async PRIVATE libinterpret pthread)
 
 if(MSVC)
 	target_compile_options(async PRIVATE /W4)

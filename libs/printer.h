@@ -18,7 +18,8 @@ class Printer
         Printer(size_t numThreads) : m_threads{numThreads} {};
         virtual ~Printer(){
              for (auto &i : m_threads)
-                i.join();
+                if (i.joinable())
+                    i.join();
         };
         virtual void print(std::shared_ptr<Bulk> data);
         virtual void printThread(size_t) = 0;
@@ -35,10 +36,9 @@ class Printer
 
 template <typename T>
 void Printer::initWith( std::shared_ptr<std::vector< T>>  ){
-    // TODO remove coments
-    /*size_t threadNumber{0};
-    for (auto &i : m_threads);
-        i = std::thread ( &Printer::printThread, this, ++threadNumber); */
+    size_t threadNumber{0};
+    for (auto &i : m_threads)
+        i = std::thread ( &Printer::printThread, this, ++threadNumber); 
 }
 
 shar_line_t Printer::getBulk(){
