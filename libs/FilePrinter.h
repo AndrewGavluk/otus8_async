@@ -7,6 +7,10 @@ class FilePrinter : public  Printer
         void print(std::shared_ptr<Bulk> data) override;
         void printThread(size_t threadNumber) override;
 
+        template <typename T>
+        void initWith( std::shared_ptr<std::vector< T>>  ); 
+
+
 };
 
 FilePrinter::FilePrinter(size_t size): Printer(size)
@@ -17,7 +21,24 @@ FilePrinter::FilePrinter(size_t size): Printer(size)
         std::ofstream out1;
         streams->push_back(std::move(out1));
     }
-    Printer::initWith(streams);
+    initWith(streams);
+}
+
+template <typename T>
+void FilePrinter::initWith( std::shared_ptr<std::vector< T>>  )
+{
+    size_t threadNumber{0};
+    for (size_t i = 0; i < m_qthreads; ++i)
+    {
+        size_t buf{++threadNumber};
+        std::thread iThread ( &FilePrinter::printThread, this, std::ref(buf)); 
+        m_threads.push_back(std::move(iThread));
+    }
+
+    for (auto &i : m_threads)
+        if (i.joinable())
+                i.join();
+         
 }
 
 void FilePrinter::print(std::shared_ptr<Bulk> data) {
@@ -31,10 +52,10 @@ void FilePrinter::printThread(size_t threadNumber){
     // TODO : 2. add thread id
     std::ofstream m_ofstream;
     // TODO m_ofstream from vector threadNumber
-
-    guardGetbulk.lock();
-    auto data = getBulk();
-    guardGetbulk.unlock();
+    // TODO : check te result and process bulks while not eof
+    shar_line_t data;
+    bool result = getBulk(data);
+    (void)(result);
 
     std::string separator;
     m_ofstream.open(data->time + ".log");

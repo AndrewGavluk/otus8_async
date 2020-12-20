@@ -1,9 +1,9 @@
 #pragma once
+#include <atomic>
+#include <condition_variable>
+#include <deque>
 #include <memory>
-#include <vector>
-#include <map>
 #include <mutex>
-#include <list>
 #include <string>
 
 #include "printer.h"
@@ -15,24 +15,33 @@ using shar_line_t = std::shared_ptr<Bulk>;
 class queueLists
 {
     public:
-        queueLists() = default;
-        void push(shar_line_t line);
-        shar_line_t pop();
+        queueLists() : m_EOF{true}{};
+        void push(shar_line_t& line);
+        bool pop(shar_line_t&);
     private:
-        std::list<shar_line_t> qList;
-        mutable std::mutex m_mutex;  // TODO: check the nesessary of mutex
+        std::deque<shar_line_t> m_deque;
+        std::mutex m_mutex; 
+        std::condition_variable m_cv;
+        std::atomic<bool> m_EOF; // TODO: add eof functionality ???
 };
 
-void queueLists::push(shar_line_t line )
+void queueLists::push(shar_line_t& line )
 {
-    std::lock_guard<std::mutex> lock(m_mutex);
-    qList.push_back(line);
+    std::unique_lock<std::mutex> lock(m_mutex);
+    m_deque.push_back(line);
+    m_cv.notify_one();
 }
 
-shar_line_t queueLists::pop()
+bool queueLists::pop(shar_line_t& line)
 {
-   std::lock_guard<std::mutex> lock(m_mutex);
-   auto iter = qList.begin();
-   qList.pop_front();
-   return *iter;
+    std::unique_lock<std::mutex> lock(m_mutex);
+    while (m_deque.size() == 0)
+			m_cv.wait(lock);
+    if (m_deque.size())
+    {
+        line = std::move(m_deque.front());
+        m_deque.pop_front();
+        return true;
+    }
+    return false;
 }

@@ -9,12 +9,31 @@ class ConsolePrinter : public Printer
         ConsolePrinter (size_t);
         void print(std::shared_ptr<Bulk> data) override;
         void printThread(size_t ) override;
+
+        template <typename T>
+        void initWith( std::shared_ptr<std::vector< T>>  ); 
+
     private:
 };
+
+template <typename T>
+void ConsolePrinter::initWith( std::shared_ptr<std::vector<T>> ){
+    size_t threadNumber{0};
+    for (size_t i = 0; i < m_qthreads; ++i)
+    {
+        size_t buf{++threadNumber};
+        m_threads.push_back(std::thread ( &ConsolePrinter::printThread, this, std::ref(buf)));
+    }
+
+    for (auto &i : m_threads)
+        if (i.joinable())
+                i.join();
+}
+
 ConsolePrinter::ConsolePrinter(size_t size = 1): Printer(size){
 
     std::shared_ptr<std::vector<std::ofstream> > streams;
-    Printer::initWith(streams);
+    initWith(streams);
 
 }
 
@@ -29,16 +48,17 @@ void ConsolePrinter::printThread(size_t threadNumber) {
     // TODO : 2. add thread id
     // TODO std::cout from vector threadNumber
     
-    //std::unique_lock<std::mutex>  guardGetbulk{m_mutex};
-    guardGetbulk.lock();
-    auto data = getBulk();
-    guardGetbulk.unlock();
+    shar_line_t data;
+    bool result = getBulk(data);
+    (void)(result);
+
+    // TODO : check te result and process bulks while not eof
     
-    std::string separator;
+    /*std::string separator;
     std::cout << "bulk: ";
     for (auto &str : data->bulk){
         std::cout << separator << str << std::endl;
         separator = ",";
     }
-    (void)time;
+    (void)time;*/
 }
