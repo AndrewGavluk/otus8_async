@@ -19,8 +19,7 @@ using shar_line_t = std::shared_ptr<Bulk>;
 class Printer
 {
     public:
-        Printer(size_t numThreads) : thisGuardBulk{m_mutex}, m_qthreads{numThreads} {
-            //thisGuardBulk.lock();
+        Printer(size_t numThreads) :  m_qthreads{numThreads} {
             };
         virtual ~Printer(){
 
@@ -29,12 +28,9 @@ class Printer
         virtual void printThread(size_t) = 0;
 
     protected:
-        std::unique_lock<std::mutex>  thisGuardBulk; 
         mutable std::mutex m_mutex;
         bool getBulk(shar_line_t&);
-        std::vector<std::thread> m_threads;
-        template <typename T>
-        void initWith( std::shared_ptr<std::vector< T>>  ){};     
+        std::vector<std::thread> m_threads;  
         size_t m_qthreads;
     
     private:    

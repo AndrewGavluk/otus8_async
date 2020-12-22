@@ -13,9 +13,7 @@ int main(/*int argc, char** argv*/){
     interpreter inter1{std::atoi(argv[1])};*/
     interpreter inter1{3};
 
-    std::shared_ptr<Printer> Console = std::make_shared<ConsolePrinter>(1);
-    
-    std::ofstream FileStream1;
+    std::shared_ptr<Printer> Console = std::make_shared<ConsolePrinter>();
     std::shared_ptr<Printer> File1 = std::make_shared<FilePrinter>(2);
 
     inter1.push_back(Console);
