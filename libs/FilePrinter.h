@@ -22,14 +22,7 @@ void FilePrinter::printThread(size_t threadNumber){
 
     while(m_queue.pop(data)){
         m_ofstream.open(data->time + "_threadN" + std::to_string(threadNumber) + ".log");
-        
-        separator = "";
-        m_ofstream << "bulk: ";
-        for (auto &str : data->bulk){
-            m_ofstream << separator << str << std::endl;
-            separator = ",";
-        }
-
+        printInfo( data, separator, m_ofstream);
         m_ofstream.close();
     }
 }

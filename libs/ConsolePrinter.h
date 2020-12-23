@@ -13,8 +13,7 @@ class ConsolePrinter : public Printer
 
 ConsolePrinter::ConsolePrinter() : Printer(1)
 {
-    for (size_t i = 0; i < m_qthreads; ++i)
-        m_threads.push_back(std::thread ( &ConsolePrinter::printThread, this, i ));
+    m_threads.push_back(std::thread ( &ConsolePrinter::printThread, this, 0));
 }
 
 void ConsolePrinter::printThread(size_t threadNumber) {
@@ -23,12 +22,7 @@ void ConsolePrinter::printThread(size_t threadNumber) {
     shar_line_t data;
     std::string separator;
 
-    while(m_queue.pop(data)){
-        separator = "";
-        std::cout << "bulk: ";
-        for (auto &str : data->bulk){
-            std::cout << separator << str << std::endl;
-            separator = ",";
-        }
-    }
+    while(m_queue.pop(data))
+        printInfo( data, separator, std::cout);
+    
 }

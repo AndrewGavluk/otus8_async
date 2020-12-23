@@ -39,7 +39,7 @@ void interpreter::print(std::time_t & time)
     stime=std::to_string(time);
         for (auto outs : m_outputs){
             auto buf = std::make_shared<Bulk>(m_block, stime);
-            outs->print(buf);
+            outs->pushQueue(buf);
         }
         m_block.clear();
     time=0;
@@ -60,10 +60,10 @@ void interpreter::processStream(std::istream& iss)
         if (input=="}" || input=="{")
             print(time);
         
-        else{// if string is not brackets print block, then push it to block, 
-            if(m_block.size() >= m_bulkSize && !level )
-                print(time);
+        else{   // if string is not brackets print block, then push it to block, 
             m_block.push_back(input); 
+            if(m_block.size() >= m_bulkSize && !level )
+                print(time);  
         }  
     }
 }
