@@ -5,6 +5,7 @@ add_library(printer STATIC printer.cpp printer.h)
 add_library(consolePrinter STATIC ConsolePrinter.cpp ConsolePrinter.h)
 add_library(filePrinter STATIC FilePrinter.cpp FilePrinter.h)
 add_library(libinterpret STATIC lib_interpret.cpp lib_interpret.h)
+add_library(asyncLib STATIC asyncLib.cpp asyncLib.h)
 #set_target_properties(libinterpret  PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
 #target_include_directories(libinterpret PRIVATE ${CMAKE_BINARY_DIR})
 

@@ -1,6 +1,8 @@
 #include "lib_interpret.h"
 
-interpreter::interpreter(int size) : m_bulkSize{static_cast<size_t>(size)}{}
+interpreter::interpreter(size_t size) : m_bulkSize{size} {}
+
+void interpreter::insert(std::string strr) {iss >> strr;}
 
 void interpreter::push_back(std::shared_ptr<Printer> printer)
 {
@@ -19,7 +21,7 @@ void interpreter::print(std::time_t & time)
     time=0;
 }
 
-void interpreter::processStream(std::istream& iss)
+void interpreter::processStream()
 {
     size_t level{0};
     std::string input;
@@ -28,7 +30,6 @@ void interpreter::processStream(std::istream& iss)
     while(std::getline(iss, input)){
         if ( input=="{" && level++ ) continue;
         if ( input=="}" && --level ) continue; 
-        
         if (!time)  time = std::time(nullptr);
 
         if (input=="}" || input=="{")
