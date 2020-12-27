@@ -24,7 +24,7 @@ class interpreter
 
     protected: 
         std::vector<std::string> m_block;
-        
+        void setEOF();
     private:  
         bool getString(std::string&);
         void print(std::time_t & );
@@ -87,6 +87,9 @@ void interpreter::processStream()
                 print(time);
         }  
     }
+    for (auto& outs : m_outputs){
+            outs->setEOF();
+        }
 }
 
 void interpreter::putString(std::string buf)

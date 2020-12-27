@@ -29,10 +29,10 @@ int main(){
 
     interpreter i1{3};
     std::shared_ptr<Printer> Console = std::make_shared<ConsolePrinter>();
-    //std::shared_ptr<Printer> File1 = std::make_shared<FilePrinter>(2);
+    std::shared_ptr<Printer> File1 = std::make_shared<FilePrinter>(2);
 
     i1.push_back(Console);
-    //i1.push_back(File1);
+    i1.push_back(File1);
     i1.processStream();
 
     return 0;

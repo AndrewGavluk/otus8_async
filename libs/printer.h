@@ -26,6 +26,7 @@ class Printer
     virtual ~Printer();
     void print(std::shared_ptr<Bulk> data);
     virtual void printThread(size_t) = 0;
+    void setEOF() { m_queue.setEOF(); }
 
     protected:
         std::vector<std::thread> m_threads;   
@@ -34,7 +35,7 @@ class Printer
         
 };
 
-Printer::Printer(size_t size ): m_qthreads{size} {   
+Printer::Printer(size_t size ): m_qthreads{size}{   
     /*size_t threadNumber{0};
     for (size_t i = 0; i < m_qthreads; ++i)
     {

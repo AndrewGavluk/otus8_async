@@ -14,15 +14,23 @@ template <typename T>
 class queueLists
 {
     public:
-        queueLists() : m_EOF{true}{};
+        queueLists() : m_EOF{false}{};
         void push(std::shared_ptr<T> line);
         bool pop(std::shared_ptr<T>& );
+        void setEOF();
     private:
         std::deque<std::shared_ptr<T>> m_deque;
         std::mutex m_mutex; 
         std::condition_variable m_cv;
-        std::atomic<bool> m_EOF; // TODO: add eof functionality ???
+        std::atomic<bool> m_EOF; 
 };
+
+template <typename T>
+void queueLists<T>::setEOF()
+{
+    m_EOF = true;
+    m_cv.notify_all();
+}
 
 template <typename T>
 void queueLists<T>::push(std::shared_ptr<T> line )
@@ -36,7 +44,7 @@ template <typename T>
 bool queueLists<T>::pop(std::shared_ptr<T>& line)
 {
     std::unique_lock<std::mutex> lock(m_mutex);
-    while (m_deque.size() == 0)
+    while (m_deque.size() == 0 && !m_EOF)
 			m_cv.wait(lock);
             
     if (m_deque.size())
