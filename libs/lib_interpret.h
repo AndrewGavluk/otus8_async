@@ -7,6 +7,7 @@
 #include <memory>
 #include <ctime>
 #include <sstream>   
+#include <stdio.h> 
 
 #include "ConsolePrinter.h"
 #include "FilePrinter.h"
@@ -15,9 +16,10 @@ class interpreter
 {
     public:
         interpreter(size_t i);
+        ~interpreter();
         void push_back(std::shared_ptr<Printer> );
         void processStream();
-        void putString(std::string&);
+        void putString(std::string);
         void putEOF();
 
     protected: 
@@ -31,10 +33,20 @@ class interpreter
         size_t m_bulkSize;
         std::thread m_thread;
         std::mutex m_mutex;
+        std::atomic<bool> m_EOF;
 };
 
 interpreter::interpreter(size_t size) : m_bulkSize{size},
-m_thread{std::thread (&interpreter::processStream, this)} {}
+m_EOF{false} {
+    m_thread = std::thread (&interpreter::processStream, this);
+}
+
+interpreter::~interpreter(){
+    
+    if (m_thread.joinable())
+        m_thread.join();
+    
+}
 
 void interpreter::push_back(std::shared_ptr<Printer> printer)
 {
@@ -76,11 +88,18 @@ void interpreter::processStream()
     }
 }
 
-void interpreter::putString(std::string& buf)
+void interpreter::putString(std::string buf)
 {
     std::unique_lock<std::mutex> l1 (m_mutex);
-    m_sstrm >> buf;
+    m_sstrm << buf;
 }
+
+void interpreter::putEOF()
+{
+    std::unique_lock<std::mutex> l1 (m_mutex);
+    m_EOF = true;
+}
+
 
 bool interpreter::getString(std::string& buf)
 {
