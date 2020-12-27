@@ -11,11 +11,13 @@
 struct Bulk
 {
     Bulk (std::vector<std::string>& _bulk, std::string& _time) :  bulk{_bulk}, time{_time} {}
+    Bulk (Bulk && other){
+        std::swap(bulk, other.bulk);
+        std::swap(time, other.time);
+    }
     std::vector<std::string> bulk;
     std::string time;
 };
-
-using shar_line_t = std::shared_ptr<Bulk>;
 
 class Printer
 {
@@ -27,13 +29,12 @@ class Printer
 
     protected:
         std::vector<std::thread> m_threads;   
-        queueLists m_queue;  
+        queueLists<Bulk> m_queue;  
         size_t m_qthreads; 
         
 };
 
-Printer::Printer(size_t size ): m_qthreads{size} {
-    
+Printer::Printer(size_t size ): m_qthreads{size} {   
     /*size_t threadNumber{0};
     for (size_t i = 0; i < m_qthreads; ++i)
     {

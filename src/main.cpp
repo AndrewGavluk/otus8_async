@@ -8,7 +8,7 @@
 int main(){
 
 
-    assyncLib interp{};
+    /*assyncLib interp{};
     size_t size {3};
     uint64_t handler1{interp.connect(size)};
     uint64_t handler2{interp.connect(size)};
@@ -25,7 +25,15 @@ int main(){
     interp.receive(handler2, input1, size1);
 
     interp.disconnect(handler1);
-    interp.disconnect(handler2);
+    interp.disconnect(handler2);*/
+
+    interpreter i1{3};
+    std::shared_ptr<Printer> Console = std::make_shared<ConsolePrinter>();
+    //std::shared_ptr<Printer> File1 = std::make_shared<FilePrinter>(2);
+
+    i1.push_back(Console);
+    //i1.push_back(File1);
+    i1.processStream();
 
     return 0;
 }

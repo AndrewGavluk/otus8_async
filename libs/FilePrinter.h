@@ -22,7 +22,7 @@ FilePrinter::FilePrinter(size_t size): Printer(size)
 void FilePrinter::printThread(size_t threadNumber){
     
     
-    shar_line_t data;
+    std::shared_ptr<Bulk> data;
     std::string separator;
 
     while(m_queue.pop(data)){

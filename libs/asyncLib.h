@@ -37,7 +37,6 @@ uint64_t assyncLib::connect(size_t& size)  {
 }
 
 void assyncLib::receive(uint64_t& id,  const char * buff, size_t size) {
-
     auto toInsert = m_inters.find(id);
     if (toInsert != m_inters.end())
         toInsert->second->putString(std::string(buff, size));

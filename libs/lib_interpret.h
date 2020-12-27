@@ -38,7 +38,7 @@ class interpreter
 
 interpreter::interpreter(size_t size) : m_bulkSize{size},
 m_EOF{false} {
-    m_thread = std::thread (&interpreter::processStream, this);
+    //m_thread = std::thread (&interpreter::processStream, this);
 }
 
 interpreter::~interpreter(){
@@ -57,7 +57,7 @@ void interpreter::print(std::time_t & time)
 {
     std::string stime{std::to_string(time)};
     stime=std::to_string(time);
-        for (auto outs : m_outputs){
+        for (auto& outs : m_outputs){
             auto buf = std::make_shared<Bulk>(m_block, stime);
             outs->print(buf);
         }
@@ -71,7 +71,8 @@ void interpreter::processStream()
     std::string input;
     std::time_t time=0;
 
-    while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
+    //while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
+    while(!std::cin.eof() && std::getline(std::cin, input)){
         if ( input=="{" && level++ ) continue;
         if ( input=="}" && --level ) continue; 
         

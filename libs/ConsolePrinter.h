@@ -20,7 +20,7 @@ ConsolePrinter::ConsolePrinter() : Printer(1)
 void ConsolePrinter::printThread(size_t threadNumber) {
     
     (void)(threadNumber);
-    shar_line_t data;
+    std::shared_ptr<Bulk> data;
     std::string separator;
 
     while(m_queue.pop(data)){
