@@ -31,10 +31,10 @@ uint64_t assyncLib::conect(size_t& size)  {
 
     inter1->push_back(Console);
     inter1->push_back(File1);
-    //std::stringstream iss;
     
-    inter1->processStream(/*std::cin*/);
+    inter1->processStream();
     m_inters.emplace(++m_counter, inter1);
+    
     return m_counter;
 }
 

@@ -16,20 +16,25 @@ class interpreter
     public:
         interpreter(size_t i);
         void push_back(std::shared_ptr<Printer> );
-        void removeOutput(std::ostream&);
         void processStream();
+        void putString(std::string&);
+        void putEOF();
 
     protected: 
         std::vector<std::string> m_block;
         
-    private:   
+    private:  
+        bool getString(std::string&);
         void print(std::time_t & );
         std::list< std::shared_ptr<Printer> > m_outputs;
         std::stringstream m_sstrm;
         size_t m_bulkSize;
+        std::thread m_thread;
+        std::mutex m_mutex;
 };
 
-interpreter::interpreter(size_t size) : m_bulkSize{size}{}
+interpreter::interpreter(size_t size) : m_bulkSize{size},
+m_thread{std::thread (&interpreter::processStream, this)} {}
 
 void interpreter::push_back(std::shared_ptr<Printer> printer)
 {
@@ -69,4 +74,16 @@ void interpreter::processStream()
                 print(time);
         }  
     }
+}
+
+void interpreter::putString(std::string& buf)
+{
+    std::unique_lock<std::mutex> l1 (m_mutex);
+    m_sstrm >> buf;
+}
+
+bool interpreter::getString(std::string& buf)
+{
+    std::unique_lock<std::mutex> l1 (m_mutex);
+    return static_cast<bool>( std::getline(m_sstrm, buf));
 }
