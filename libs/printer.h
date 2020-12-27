@@ -8,7 +8,7 @@
 
 #include "queue.h"
 
-using shar_line_t = std::shared_ptr<Bulk>;
+//using shar_line_t = std::shared_ptr<Bulk>;
 
 class Printer
 {
@@ -21,14 +21,14 @@ class Printer
 
     protected:
         template <typename T> 
-        inline void printInfo(shar_line_t& ,std::string& , T& m_ofstream );
+        inline void printInfo(shar_line_t<Bulk>& ,std::string& , T& m_ofstream );
         std::vector<std::thread> m_threads;   
-        queueLists m_queue;  
+        queueLists<Bulk> m_queue;  
         size_t m_qthreads;      
 };
 
 template <typename T> 
-void Printer::printInfo(shar_line_t& data,std::string& separator, T& m_ofstream ){
+void Printer::printInfo(shar_line_t<Bulk>& data,std::string& separator, T& m_ofstream ){
         
         if (! data->bulk.size()) 
             return;

@@ -1,8 +1,14 @@
 #include "lib_interpret.h"
 
-interpreter::interpreter(size_t size) : m_bulkSize{size} {}
+interpreter::interpreter(size_t size) : m_bulkSize{size} {
+ 
+}
 
-void interpreter::insert(std::string strr) {iss >> strr;}
+interpreter::~interpreter()
+{
+    if (m_thread.joinable())
+        m_thread.join();
+}
 
 void interpreter::push_back(std::shared_ptr<Printer> printer)
 {
@@ -21,13 +27,24 @@ void interpreter::print(std::time_t & time)
     time=0;
 }
 
+void interpreter::start()   {   
+    m_thread = std::thread {&interpreter::processStream, this };    
+}
+
+void interpreter::insert(std::shared_ptr<std::string> strr)
+{
+    m_queue.push(strr);
+}
+
 void interpreter::processStream()
 {
     size_t level{0};
+    std::shared_ptr<std::string> sharinput;
     std::string input;
     std::time_t time=0;
 
-    while(std::getline(iss, input)){
+    while(m_queue.pop(sharinput)){
+        input = *sharinput.get();
         if ( input=="{" && level++ ) continue;
         if ( input=="}" && --level ) continue; 
         if (!time)  time = std::time(nullptr);

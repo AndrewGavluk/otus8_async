@@ -9,7 +9,7 @@ FilePrinter::FilePrinter(size_t size): Printer(size)
 void FilePrinter::printThread(size_t threadNumber){
     
     std::ofstream m_ofstream;
-    shar_line_t data;
+    shar_line_t<Bulk> data;
     std::string separator;
 
     while(m_queue.pop(data)){
