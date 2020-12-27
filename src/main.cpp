@@ -1,6 +1,8 @@
-#include "../libs/lib_interpret.h" 
+/*#include "../libs/lib_interpret.h" 
 #include "../libs/ConsolePrinter.h" 
-#include "../libs/FilePrinter.h" 
+#include "../libs/FilePrinter.h" */
+
+#include "../libs/asyncLib.h"
 
 
 int main(/*int argc, char** argv*/){
@@ -11,14 +13,20 @@ int main(/*int argc, char** argv*/){
         return 1;
     }
     interpreter inter1{std::atoi(argv[1])};*/
-    interpreter inter1{3};
+    /*interpreter inter1{3};
 
     std::shared_ptr<Printer> Console = std::make_shared<ConsolePrinter>();
     std::shared_ptr<Printer> File1 = std::make_shared<FilePrinter>(2);
 
     inter1.push_back(Console);
-    inter1.push_back(File1);
-    inter1.processStream(std::cin);
+    inter1.push_back(File1);*/
+    //inter1.processStream(std::cin);
+    
 
+    assyncLib a1;
+
+    size_t size1 = 3;
+    auto handler1 = a1.conect(size1);
+    (void) (handler1);
     return 0;
 }

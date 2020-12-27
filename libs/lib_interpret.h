@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <ctime>
+#include <sstream>   
 
 #include "ConsolePrinter.h"
 #include "FilePrinter.h"
@@ -13,10 +14,10 @@
 class interpreter
 {
     public:
-        interpreter(int i);
+        interpreter(size_t i);
         void push_back(std::shared_ptr<Printer> );
         void removeOutput(std::ostream&);
-        void processStream(std::istream&);
+        void processStream();
 
     protected: 
         std::vector<std::string> m_block;
@@ -24,10 +25,11 @@ class interpreter
     private:   
         void print(std::time_t & );
         std::list< std::shared_ptr<Printer> > m_outputs;
+        std::stringstream m_sstrm;
         size_t m_bulkSize;
 };
 
-interpreter::interpreter(int size) : m_bulkSize{static_cast<size_t>(size)}{}
+interpreter::interpreter(size_t size) : m_bulkSize{size}{}
 
 void interpreter::push_back(std::shared_ptr<Printer> printer)
 {
@@ -46,13 +48,13 @@ void interpreter::print(std::time_t & time)
     time=0;
 }
 
-void interpreter::processStream(std::istream& iss)
+void interpreter::processStream()
 {
     size_t level{0};
     std::string input;
     std::time_t time=0;
 
-    while(std::getline(iss, input)){
+    while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
         if ( input=="{" && level++ ) continue;
         if ( input=="}" && --level ) continue; 
         

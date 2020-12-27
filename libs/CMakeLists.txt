@@ -9,8 +9,6 @@ set_target_properties(libprinter  PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIR
 
 target_include_directories(libprinter PRIVATE ${CMAKE_BINARY_DIR})
 
-
-
 if(MSVC)
 	target_compile_options(libinterpret PRIVATE /W4)
 else()
