@@ -1,5 +1,6 @@
-//#include "../libs/async.h" 
-//#include "../libs/process.h"
+#include "../libs/lib_interpret.h" 
+#include "../libs/ConsolePrinter.h" 
+#include "../libs/FilePrinter.h" 
 
 
 int main(/*int argc, char** argv*/){
@@ -10,27 +11,14 @@ int main(/*int argc, char** argv*/){
         return 1;
     }
     interpreter inter1{std::atoi(argv[1])};*/
-    //asy
+    interpreter inter1{3};
 
-    /*async interp{};
+    std::shared_ptr<Printer> Console = std::make_shared<ConsolePrinter>();
+    std::shared_ptr<Printer> File1 = std::make_shared<FilePrinter>(2);
 
-    uint64_t handler1{interp.connect()};
-    uint64_t handler2{interp.connect()};
-
-    (void)(handler1);
-    (void)(handler2);
-    
-    const char *input1 = "cmd01\n cmd02\n cmd03\n cmd04\n {\n cmd11\n cmd12\n {\n cmd22\n }\n cmd31\n} cmd41\n cmd42\n"; 
-    size_t size1 = 80;
-
-    const char *input2 = "cmd01\n cmd02\n cmd03\n cmd04\n cmd05\n {\n cmd11\n cmd12\n cmd13\n{\n cmd22\n cmd23\n}\n cmd31\n} cmd41\n cmd42\n cmd43\n"; 
-    size_t size2 = 106;
-
-    interp.receive(handler1, input1, size1);
-    interp.receive(handler2, input2, size2);
-    
-    interp.receive(handler1, input2, size2);
-    interp.receive(handler2, input1, size1);*/
+    inter1.push_back(Console);
+    inter1.push_back(File1);
+    inter1.processStream(std::cin);
 
     return 0;
 }

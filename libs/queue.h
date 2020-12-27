@@ -5,46 +5,37 @@
 #include <memory>
 #include <mutex>
 #include <string>
-#include <vector>
 
-struct Bulk
-{
-    Bulk (std::vector<std::string>& _bulk, std::string& _time) :  bulk{_bulk}, time{_time} {}
-    std::vector<std::string> bulk;
-    std::string time;
-};
+#include "printer.h"
 
-template <typename T>
-using shar_line_t = std::shared_ptr<T>;
+struct Bulk;
 
-template <typename T>
+using shar_line_t = std::shared_ptr<Bulk>;
+
 class queueLists
 {
     public:
         queueLists() : m_EOF{true}{};
-        void push(shar_line_t<T> line);
-        bool pop(shar_line_t<T>);
-        void pushEOF();
+        void push(shar_line_t& line);
+        bool pop(shar_line_t&);
     private:
-        std::deque<shar_line_t<T>> m_deque;
+        std::deque<shar_line_t> m_deque;
         std::mutex m_mutex; 
         std::condition_variable m_cv;
-        std::atomic<bool> m_EOF; 
+        std::atomic<bool> m_EOF; // TODO: add eof functionality ???
 };
 
-template <typename T>
-void queueLists<T>::push(shar_line_t<T> line )
+void queueLists::push(shar_line_t& line )
 {
     std::unique_lock<std::mutex> lock(m_mutex);
     m_deque.push_back(line);
     m_cv.notify_one();
 }
 
-template <typename T>
-bool queueLists<T>::pop(shar_line_t<T> line)
+bool queueLists::pop(shar_line_t& line)
 {
     std::unique_lock<std::mutex> lock(m_mutex);
-    while (m_deque.size() == 0 && m_EOF)
+    while (m_deque.size() == 0)
 			m_cv.wait(lock);
     if (m_deque.size())
     {
@@ -53,11 +44,4 @@ bool queueLists<T>::pop(shar_line_t<T> line)
         return true;
     }
     return false;
-}
-
-template <typename T>
-void queueLists<T>::pushEOF()
-{
-    m_EOF = false;
-    m_cv.notify_all();
 }

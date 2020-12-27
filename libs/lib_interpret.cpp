@@ -1,61 +1,38 @@
-#include "lib_interpret.h"
+#include "lib_interpret.h" 
+/*
+interpreter::interpreter(int size) : m_bulkSize{static_cast<size_t>(size)}{}
 
-interpreter::interpreter(size_t size) : m_bulkSize{size} {
- 
-}
-
-interpreter::~interpreter()
+void interpreter::appendConsole(std::ostream& out)
 {
-    if (m_thread.joinable())
-        m_thread.join();
+    m_outputs.push_back(std::make_shared<ConsolePrinter>(out));
 }
 
-void interpreter::push_back(std::shared_ptr<Printer> printer)
-{
-    m_outputs.push_back(printer);
-}
 
-void interpreter::print(std::time_t & time)
-{
-    std::string stime{std::to_string(time)};
-    stime=std::to_string(time);
-        for (auto outs : m_outputs){
-            auto buf = std::make_shared<Bulk>(m_block, stime);
-            outs->pushQueue(buf);
-        }
-        m_block.clear();
-    time=0;
-}
 
-void interpreter::start()   {   
-    m_thread = std::thread {&interpreter::processStream, this };    
-}
-
-void interpreter::insert(std::shared_ptr<std::string> strr)
-{
-    m_queue.push(strr);
-}
-
-void interpreter::processStream()
+void interpreter::processStream(std::istream& iss)
 {
     size_t level{0};
-    std::shared_ptr<std::string> sharinput;
     std::string input;
+    
+    
     std::time_t time=0;
-
-    while(m_queue.pop(sharinput)){
-        input = *sharinput.get();
+    std::string stime;
+    while(std::getline(iss, input)){
         if ( input=="{" && level++ ) continue;
         if ( input=="}" && --level ) continue; 
+        
         if (!time)  time = std::time(nullptr);
 
-        if (input=="}" || input=="{")
-            print(time);
+        if (input=="}" || input=="{" || m_block.size() >= m_bulkSize)
+        {   
+            stime=std::to_string(time);
+            for (auto outs : m_outputs)
+                outs->print( m_block, stime );
+            m_block.clear();
+            time=0;
+        }
+        else
+            m_block.push_back(input);
         
-        else{   // if string is not brackets print block, then push it to block, 
-            m_block.push_back(input); 
-            if(m_block.size() >= m_bulkSize && !level )
-                print(time);  
-        }  
     }
-}
+}*/
