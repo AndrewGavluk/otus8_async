@@ -8,12 +8,14 @@ Printer::~Printer(){
                 i.join();
 }
 
-void Printer::print(std::shared_ptr<Bulk> data)
-{
+void Printer::setEOF() { 
+    m_queue.setEOF(); 
+}
+
+void Printer::print(std::shared_ptr<Bulk> data){
     m_queue.push(data);
 }
 
-void Printer::printThread(size_t a1)
-{
+void Printer::printThread(size_t a1){
     (void)(a1);
 } 

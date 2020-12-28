@@ -22,11 +22,11 @@ struct Bulk
 class Printer
 {
     public:
-    Printer(size_t);
-    virtual ~Printer();
-    void print(std::shared_ptr<Bulk> data);
-    virtual void printThread(size_t) = 0;
-    void setEOF() { m_queue.setEOF(); }
+        Printer(size_t);
+        virtual ~Printer();
+        void print(std::shared_ptr<Bulk> data);
+        virtual void printThread(size_t) = 0;
+        void setEOF();
 
     protected:
         std::vector<std::thread> m_threads;   

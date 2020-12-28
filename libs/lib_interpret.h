@@ -1,10 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <fstream>
 #include <list>
-#include <vector>
-#include <memory>
 #include <ctime>
 #include <sstream>   
 #include <stdio.h> 
