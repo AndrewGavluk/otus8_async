@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.2) 
 
 add_executable(async main.cpp)
 set_target_properties(async PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQIRED ON)
-target_link_libraries(async PRIVATE pthread printer libinterpret )
+target_link_libraries(async PRIVATE pthread 
+printer filePrinter consolePrinter libinterpret libasync )
 
 if(MSVC)
 	target_compile_options(async PRIVATE /W4)

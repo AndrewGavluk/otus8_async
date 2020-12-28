@@ -1,17 +1,23 @@
 #include "ConsolePrinter.h"
 
-/*
-ConsolePrinter::ConsolePrinter(std::ostream& _out) {out = _out;}
-
- void ConsolePrinter::print(std::vector<std::string>& bulk, std::string& time) {
-    
-    std::string separator;
-    std::cout << "bulk: ";
-    for (auto &str : bulk){
-        std::cout << separator << str << std::endl;
-        separator = ",";
-    }
-    (void)clock;
-    std::cout << "to_console\n";
+ConsolePrinter::ConsolePrinter() : Printer(1)
+{
+    for (size_t i = 0; i < m_qthreads; ++i)
+        m_threads.push_back(std::thread ( &ConsolePrinter::printThread, this, i ));
 }
-*/
+
+void ConsolePrinter::printThread(size_t threadNumber) {
+    
+    (void)(threadNumber);
+    std::shared_ptr<Bulk> data;
+    std::string separator;
+
+    while(m_queue.pop(data)){
+        separator = "";
+        std::cout << "bulk: ";
+        for (auto &str : data->bulk){
+            std::cout << separator << str << std::endl;
+            separator = ",";
+        }
+    }
+}
