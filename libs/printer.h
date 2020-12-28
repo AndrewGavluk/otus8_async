@@ -34,29 +34,3 @@ class Printer
         size_t m_qthreads; 
         
 };
-
-Printer::Printer(size_t size ): m_qthreads{size}{   
-    /*size_t threadNumber{0};
-    for (size_t i = 0; i < m_qthreads; ++i)
-    {
-        size_t buf{++threadNumber};
-        m_threads.push_back(std::thread (pThread, this, std::ref(buf)));
-    }*/
-};
-
-
-Printer::~Printer(){
-    for (auto &i : m_threads)
-        if (i.joinable())
-                i.join();
-}
-
-void Printer::print(std::shared_ptr<Bulk> data)
-{
-    m_queue.push(data);
-}
-
-void Printer::printThread(size_t a1)
-{
-    (void)(a1);
-} 
