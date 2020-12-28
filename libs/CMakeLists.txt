@@ -13,7 +13,8 @@ set_target_properties(consolePrinter PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQ
 target_include_directories(consolePrinter PRIVATE ${CMAKE_BINARY_DIR})
 
 add_library(libinterpret STATIC lib_interpret.cpp lib_interpret.h)
-set_target_properties(printer libinterpret  PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+target_link_libraries(libinterpret PRIVATE printer) 
+set_target_properties(libinterpret  PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 target_include_directories(libinterpret PRIVATE ${CMAKE_BINARY_DIR})
 
 add_library(libasync STATIC asyncLib.cpp asyncLib.h)

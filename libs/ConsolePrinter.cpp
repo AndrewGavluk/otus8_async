@@ -6,8 +6,6 @@ ConsolePrinter::ConsolePrinter() : Printer(1)
         m_threads.push_back(std::thread ( &ConsolePrinter::printThread, this, i ));
 }
 
-ConsolePrinter::~ConsolePrinter() {}
-
 void ConsolePrinter::printThread(size_t threadNumber) {
     
     (void)(threadNumber);

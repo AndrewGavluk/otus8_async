@@ -1,6 +1,5 @@
 #include "lib_interpret.h" 
 
-/*
 interpreter::interpreter(size_t size) : m_bulkSize{size}  {
        
 }
@@ -20,7 +19,6 @@ void interpreter::StartTread()
 {
     m_thread = std::thread (&interpreter::processStream, std::ref(*this));
 }
-
 void interpreter::print(std::time_t & time)
 {
     std::string stime{std::to_string(time)};
@@ -74,4 +72,4 @@ void interpreter::putEOF()
 bool interpreter::getString(std::string& buf)
 {
     return static_cast<bool>( std::getline(m_sstrm, buf));
-}*/
+}
