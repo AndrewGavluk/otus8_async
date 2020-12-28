@@ -6,6 +6,8 @@ FilePrinter::FilePrinter(size_t size): Printer(size)
         m_threads.push_back(std::thread ( &FilePrinter::printThread, this, i ));
 }
 
+FilePrinter::~FilePrinter(){}
+
 void FilePrinter::printThread(size_t threadNumber){
     
     

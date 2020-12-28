@@ -6,7 +6,7 @@ class ConsolePrinter : public Printer
 {
     public:
         ConsolePrinter ();
-        ~ConsolePrinter (){};
+        ~ConsolePrinter ();
         void printThread(size_t ) override;
 };
 

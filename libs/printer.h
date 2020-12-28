@@ -32,5 +32,4 @@ class Printer
         std::vector<std::thread> m_threads;   
         queueLists<Bulk> m_queue;  
         size_t m_qthreads; 
-        
 };
