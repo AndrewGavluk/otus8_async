@@ -24,7 +24,7 @@ assyncLib::assyncLib() : m_counter{0} {}
 
 uint64_t assyncLib::connect(size_t& size)  {
     
-    std::shared_ptr<interpreter> inter1 = std::make_shared<interpreter>(size);
+    std::shared_ptr<interpreter> inter1 = std::make_shared<interpreter>(size, true);
 
     std::shared_ptr<Printer> Console = std::make_shared<ConsolePrinter>();
     std::shared_ptr<Printer> File1 = std::make_shared<FilePrinter>(2);
@@ -32,7 +32,7 @@ uint64_t assyncLib::connect(size_t& size)  {
     inter1->push_back(Console);
     inter1->push_back(File1);
     m_inters.emplace(++m_counter, inter1);
-
+    inter1->StartTread();
     return m_counter;
 }
 

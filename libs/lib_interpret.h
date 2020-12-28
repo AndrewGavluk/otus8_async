@@ -15,16 +15,16 @@
 class interpreter
 {
     public:
-        interpreter(size_t i);
+        interpreter(size_t i, bool);
         ~interpreter();
         void push_back(std::shared_ptr<Printer> );
         void processStream();
         void putString(std::string);
         void putEOF();
+        void StartTread();
 
     protected: 
         std::vector<std::string> m_block;
-        void setEOF();
     private:  
         bool getString(std::string&);
         void print(std::time_t & );
@@ -32,20 +32,17 @@ class interpreter
         std::stringstream m_sstrm;
         size_t m_bulkSize;
         std::thread m_thread;
-        std::mutex m_mutex;
-        std::atomic<bool> m_EOF;
+        bool useThread;
 };
 
-interpreter::interpreter(size_t size) : m_bulkSize{size},
-m_EOF{false} {
-    //m_thread = std::thread (&interpreter::processStream, this);
+interpreter::interpreter(size_t size, bool CreateThread) : m_bulkSize{size}, useThread{CreateThread}  {
+       
 }
 
 interpreter::~interpreter(){
     
     if (m_thread.joinable())
         m_thread.join();
-    
 }
 
 void interpreter::push_back(std::shared_ptr<Printer> printer)
@@ -53,6 +50,10 @@ void interpreter::push_back(std::shared_ptr<Printer> printer)
     m_outputs.push_back(printer);
 }
 
+void interpreter::StartTread()
+{
+    m_thread = std::thread (&interpreter::processStream, this);
+}
 void interpreter::print(std::time_t & time)
 {
     std::string stime{std::to_string(time)};
@@ -87,26 +88,23 @@ void interpreter::processStream()
                 print(time);
         }  
     }
-    for (auto& outs : m_outputs){
-            outs->setEOF();
-        }
+    putEOF();
 }
 
 void interpreter::putString(std::string buf)
 {
-    std::unique_lock<std::mutex> l1 (m_mutex);
     m_sstrm << buf;
 }
 
 void interpreter::putEOF()
 {
-    std::unique_lock<std::mutex> l1 (m_mutex);
-    m_EOF = true;
+    for (auto& outs : m_outputs){
+            outs->setEOF();
+        }
 }
 
 
 bool interpreter::getString(std::string& buf)
 {
-    std::unique_lock<std::mutex> l1 (m_mutex);
     return static_cast<bool>( std::getline(m_sstrm, buf));
 }
