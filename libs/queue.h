@@ -22,7 +22,7 @@ class queueLists
         std::deque<std::shared_ptr<T>> m_deque;
         std::mutex m_mutex; 
         std::condition_variable m_cv;
-        std::atomic<bool> m_EOF; 
+        bool m_EOF; 
 };
 
 template <typename T>

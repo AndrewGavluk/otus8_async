@@ -15,7 +15,7 @@
 class interpreter
 {
     public:
-        interpreter(size_t i, bool);
+        interpreter(size_t i);
         ~interpreter();
         void push_back(std::shared_ptr<Printer> );
         void processStream();
@@ -35,7 +35,7 @@ class interpreter
         bool useThread;
 };
 
-interpreter::interpreter(size_t size, bool CreateThread) : m_bulkSize{size}, useThread{CreateThread}  {
+interpreter::interpreter(size_t size) : m_bulkSize{size}  {
        
 }
 
@@ -52,7 +52,7 @@ void interpreter::push_back(std::shared_ptr<Printer> printer)
 
 void interpreter::StartTread()
 {
-    m_thread = std::thread (&interpreter::processStream, this);
+    m_thread = std::thread (&interpreter::processStream, std::ref(*this));
 }
 void interpreter::print(std::time_t & time)
 {
@@ -72,8 +72,8 @@ void interpreter::processStream()
     std::string input;
     std::time_t time=0;
 
-    //while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
-    while(!std::cin.eof() && std::getline(std::cin, input)){
+    while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
+    //while(!std::cin.eof() && std::getline(std::cin, input)){
         if ( input=="{" && level++ ) continue;
         if ( input=="}" && --level ) continue; 
         
