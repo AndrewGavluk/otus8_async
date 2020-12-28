@@ -18,6 +18,7 @@ set_target_properties(libinterpret  PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQU
 target_include_directories(libinterpret PRIVATE ${CMAKE_BINARY_DIR})
 
 add_library(libasync STATIC asyncLib.cpp asyncLib.h)
+target_link_libraries(libasync PRIVATE libinterpret filePrinter consolePrinter printer) 
 set_target_properties(libasync  PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 target_include_directories(libasync PRIVATE ${CMAKE_BINARY_DIR})
 
