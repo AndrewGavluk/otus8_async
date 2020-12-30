@@ -2,11 +2,7 @@
 
 Printer::Printer(size_t size ): m_qthreads{size}{  };
 
-Printer::~Printer(){
-    for (auto &i : m_threads)
-        if (i.joinable())
-                i.join();
-}
+Printer::~Printer(){}
 
 void Printer::setEOF() { 
     m_queue.setEOF(); 

@@ -7,7 +7,7 @@ uint64_t assyncLib::connect(size_t& size)  {
     std::shared_ptr<interpreter> inter1 = std::make_shared<interpreter>(size);
 
     inter1->push_back(std::make_shared<ConsolePrinter>());
-    inter1->push_back(std::make_shared<FilePrinter>(2));
+    //inter1->push_back(std::make_shared<FilePrinter>(2));
     inter1->StartTread();
     m_inters.emplace(++m_counter, inter1);
     return m_counter;

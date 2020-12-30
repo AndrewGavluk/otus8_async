@@ -21,13 +21,11 @@ void interpreter::StartTread()
 }
 void interpreter::print(std::time_t & time)
 {
-    std::string stime{std::to_string(time)};
-    stime=std::to_string(time);
-        for (auto& outs : m_outputs){
-            auto buf = std::make_shared<Bulk>(m_block, stime);
-            outs->print(buf);
-        }
-        m_block.clear();
+    auto bulkPrinter = [this, &time](std::shared_ptr<Printer> outs){
+         outs->print(std::make_shared<Bulk>(m_block, std::to_string(time)));};
+    
+    std::for_each(m_outputs.begin(), m_outputs.end(), bulkPrinter);
+    m_block.clear();
     time=0;
 }
 
@@ -38,7 +36,6 @@ void interpreter::processStream()
     std::time_t time=0;
 
     while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
-    //while(!std::cin.eof() && std::getline(std::cin, input)){
         if ( input=="{" && level++ ) continue;
         if ( input=="}" && --level ) continue; 
         

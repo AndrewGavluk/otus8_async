@@ -7,7 +7,7 @@ class FilePrinter : public  Printer
 {
     public:
         FilePrinter(size_t size);
-        ~FilePrinter(){};
+        ~FilePrinter();
         void printThread(size_t threadNumber) override;
     private:
         std::ofstream m_ofstream;
