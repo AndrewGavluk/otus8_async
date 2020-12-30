@@ -1,11 +1,8 @@
 #include "lib_interpret.h" 
 
-interpreter::interpreter(size_t size) : m_bulkSize{size}  {
-       
-}
+interpreter::interpreter(size_t size) : m_bulkSize{size}  {}
 
 interpreter::~interpreter(){
-    
     if (m_thread.joinable())
         m_thread.join();
 }
@@ -19,10 +16,12 @@ void interpreter::StartTread()
 {
     m_thread = std::thread (&interpreter::processStream, std::ref(*this));
 }
+
 void interpreter::print(std::time_t & time)
 {
-    auto bulkPrinter = [this, &time](std::shared_ptr<Printer> outs){
-         outs->print(std::make_shared<Bulk>(m_block, std::to_string(time)));};
+    std::string stime{std::to_string(time)}; 
+    auto bulkPrinter = [this, &stime](std::shared_ptr<Printer> outs){
+         outs->print(std::make_shared<Bulk>(m_block, stime));};
     
     std::for_each(m_outputs.begin(), m_outputs.end(), bulkPrinter);
     m_block.clear();
