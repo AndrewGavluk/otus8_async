@@ -33,7 +33,9 @@ void interpreter::processStream()
     size_t level{0};
     std::string input;
     std::time_t time=0;
-    std::this_thread::sleep_for (std::chrono::milliseconds(100));
+
+
+    std::this_thread::sleep_for (std::chrono::microseconds(100));
 
     while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
         if ( input=="{" && level++ ) continue;
@@ -41,8 +43,9 @@ void interpreter::processStream()
         if (!time)  time = std::time(nullptr);
         
         if (input=="}" || input=="{")
-            print(time); 
-        else{// if string is not brackets print block, then push it to block, 
+            print(time);
+        
+        else{
             m_block.push_back(input); 
             if(m_block.size() >= m_bulkSize && !level )
                 print(time);
