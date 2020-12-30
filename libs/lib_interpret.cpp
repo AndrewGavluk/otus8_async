@@ -7,7 +7,7 @@ interpreter::~interpreter(){
         m_thread.join();
 }
 
-void interpreter::push_back(std::shared_ptr<Printer> printer)
+void interpreter::addPrinter(std::shared_ptr<Printer> printer)
 {
     m_outputs.push_back(printer);
 }

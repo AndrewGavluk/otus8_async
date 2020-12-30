@@ -13,7 +13,7 @@ class interpreter
     public:
         interpreter(size_t i);
         ~interpreter();
-        void push_back(std::shared_ptr<Printer> );
+        void addPrinter(std::shared_ptr<Printer> );
         void processStream();
         void putString(std::string);
         void StartTread();
