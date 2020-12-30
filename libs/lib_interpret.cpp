@@ -49,21 +49,15 @@ void interpreter::processStream()
                 print(time);
         }  
     }
-    putEOF();
+    for (auto& outs : m_outputs){
+            outs->setEOF();
+        }
 }
 
 void interpreter::putString(std::string buf)
 {
     m_sstrm << buf;
 }
-
-void interpreter::putEOF()
-{
-    for (auto& outs : m_outputs){
-            outs->setEOF();
-        }
-}
-
 
 bool interpreter::getString(std::string& buf)
 {

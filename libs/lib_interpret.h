@@ -16,7 +16,6 @@ class interpreter
         void push_back(std::shared_ptr<Printer> );
         void processStream();
         void putString(std::string);
-        void putEOF();
         void StartTread();
 
     protected: 
