@@ -11,7 +11,3 @@ void Printer::setEOF() {
 void Printer::print(std::shared_ptr<Bulk> data){
     m_queue.push(data);
 }
-
-void Printer::printThread(size_t a1){
-    (void)(a1);
-} 

@@ -36,8 +36,7 @@ void interpreter::processStream()
 
     while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
         if ( input=="{" && level++ ) continue;
-        if ( input=="}" && --level ) continue; 
-        
+        if ( input=="}" && --level ) continue;
         if (!time)  time = std::time(nullptr);
 
         if (input=="}" || input=="{")
