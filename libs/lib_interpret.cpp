@@ -58,8 +58,3 @@ void interpreter::putString(std::string buf)
 {
     m_sstrm << buf;
 }
-
-bool interpreter::getString(std::string& buf)
-{
-    return static_cast<bool>( std::getline(m_sstrm, buf));
-}
