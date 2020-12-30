@@ -13,7 +13,7 @@ int main(){
     const char *input2 = "cmd51 \ncmd52 \ncmd53 \ncmd54 \ncmd55 \n{\ncmd61 \ncmd62 \ncmd63 \n{\ncmd71 \ncmd72 \n}\ncmd81 \n}\ncmd91 \ncmd92 \ncmd93 \n"; 
     size_t size2 = 107;
     
-    //size_t ping = 500;
+    //size_t ping = 100;
 
     //std::this_thread::sleep_for (std::chrono::milliseconds(ping));
     interp.receive(handler1, input1, size1);
