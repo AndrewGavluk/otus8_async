@@ -1,6 +1,6 @@
 #include "printer.h"
 
-Printer::Printer(size_t size ): m_qthreads{size}{  };
+Printer::Printer(size_t size ): m_qthreads{size}{};
 
 Printer::~Printer(){}
 
