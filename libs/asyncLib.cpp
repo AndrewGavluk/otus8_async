@@ -7,7 +7,7 @@ uint64_t assyncLib::connect(size_t& size)  {
     std::shared_ptr<interpreter> inter1 = std::make_shared<interpreter>(size);
 
     inter1->addPrinter(std::make_shared<ConsolePrinter>());
-    //inter1->addPrinter(std::make_shared<FilePrinter>(2));
+    inter1->addPrinter(std::make_shared<FilePrinter>(2));
     inter1->StartTread();
     m_inters.emplace(++m_counter, inter1);
     return m_counter;
@@ -21,7 +21,6 @@ void assyncLib::receive(uint64_t& id,  const char * buff, size_t size) {
 
 void assyncLib::disconnect(uint64_t& id) {
     auto toDel = m_inters.find(id);
-    if (toDel != m_inters.end()){
+    if (toDel != m_inters.end())
         m_inters.erase(toDel); 
-    }
 }

@@ -39,19 +39,18 @@ void interpreter::processStream()
         if ( input=="{" && level++ ) continue;
         if ( input=="}" && --level ) continue;
         if (!time)  time = std::time(nullptr);
-
-        if (input=="}" || input=="{")
-            print(time);
         
+        if (input=="}" || input=="{")
+            print(time); 
         else{// if string is not brackets print block, then push it to block, 
             m_block.push_back(input); 
             if(m_block.size() >= m_bulkSize && !level )
                 print(time);
         }  
     }
-    for (auto& outs : m_outputs){
-            outs->setEOF();
-        }
+
+    auto bulkPrintEOF = [](std::shared_ptr<Printer> outs){outs->setEOF();};
+    std::for_each(m_outputs.begin(), m_outputs.end(), bulkPrintEOF);
 }
 
 void interpreter::putString(std::string buf)
