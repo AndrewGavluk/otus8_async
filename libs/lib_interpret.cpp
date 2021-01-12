@@ -34,7 +34,6 @@ void interpreter::processStream()
     std::string input;
     std::time_t time=0;
 
-
     std::this_thread::sleep_for (std::chrono::microseconds(100));
 
     while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
@@ -58,5 +57,5 @@ void interpreter::processStream()
 
 void interpreter::putString(std::string buf)
 {
-    m_sstrm << buf;
+    m_sstrm << buf << std::endl;
 }

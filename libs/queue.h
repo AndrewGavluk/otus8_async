@@ -29,7 +29,7 @@ template <typename T>
 void queueLists<T>::setEOF()
 {
     m_EOF = true;
-    m_cv.notify_all();
+    m_cv.notify_one(); // all ( one after one );
 }
 
 template <typename T>
@@ -53,5 +53,6 @@ bool queueLists<T>::pop(std::shared_ptr<T>& line)
         m_deque.pop_front();
         return true;
     }
+    m_cv.notify_one(); // all ( one after one );
     return false;
 }
