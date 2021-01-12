@@ -1,14 +1,17 @@
 cmake_minimum_required(VERSION 3.2)
 
 add_library(printer printer.h printer.cpp)
+target_link_libraries(printer PRIVATE pthread) 
 set_target_properties(printer PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 target_include_directories(printer PRIVATE ${CMAKE_BINARY_DIR})
 
 add_library(filePrinter FilePrinter.h FilePrinter.cpp)
+target_link_libraries(printer PRIVATE pthread) 
 set_target_properties(filePrinter PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 target_include_directories(filePrinter PRIVATE ${CMAKE_BINARY_DIR})
 
 add_library(consolePrinter ConsolePrinter.h ConsolePrinter.cpp)
+target_link_libraries(printer PRIVATE pthread) 
 set_target_properties(consolePrinter PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 target_include_directories(consolePrinter PRIVATE ${CMAKE_BINARY_DIR})
 
