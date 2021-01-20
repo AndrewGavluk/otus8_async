@@ -19,7 +19,6 @@ class interpreter
         void processStream();
         void putString(std::string);
         void StartTread();
-
     protected: 
         std::vector<std::string> m_block;
 

@@ -5,8 +5,7 @@
 #include <gtest/gtest.h>
 
 #include "../libs/lib_interpret.h"
-#include "../libs/FilePrinter.h"
-
+#include "TestPrinter.h"
 
 class inerpretTester : public interpreter{
 
@@ -26,55 +25,66 @@ void testInputOutput(std::vector<std::string>& input,
     std::shared_ptr<inerpretTester> inter1 = std::make_shared<inerpretTester>(size);
 	inter1->addPrinter(std::make_shared<ConsolePrinter>());
     inter1->addPrinter(std::make_shared<FilePrinter>(2));
-    inter1->StartTread();
-
+	inter1->addPrinter(std::make_shared<TestPrinter>(1, "Tester"));
+	inter1->StartTread();
 	for (auto &cmd : input)
   		inter1->putString(std::string(cmd));
 
-	std::this_thread::sleep_for (std::chrono::microseconds(500));
-	auto result = inter1->getBlock();
+	std::this_thread::sleep_for (std::chrono::milliseconds(2));	
+	std::ifstream Tester("Tester");
+	std::string str;
+	std::vector<std::string> result;
+	std::this_thread::sleep_for (std::chrono::milliseconds(2));
+	while (std::getline(Tester, str))
+    	if(str.size() > 0)
+        	result.push_back(str);	
 	ASSERT_EQ( result, output);
+	std::this_thread::sleep_for (std::chrono::milliseconds(1000));
 }
 
 TEST(gtest_interpret_test1, test_file_simple1){
-	std::vector<std::string>  output {"cmd11"};
-	testInputOutput(output, output);
+	std::vector<std::string>  input {"cmd11"};
+	std::vector<std::string>  output {};
+	testInputOutput(input, output);
 }
 
 TEST(gtest_interpret_test1, test_file_simple2){
-	std::vector<std::string>  output {"cmd11", "cmd22"};
+	std::vector<std::string>  input {"cmd11", "cmd22"};
+	std::vector<std::string>  output {};
 	testInputOutput(output, output);
 }
 
 TEST(gtest_interpret_test1, test_file_bulksize1){
 	std::vector<std::string>  input {"cmd1", "cmd2", "cmd3"};
-	std::vector<std::string>  output {"cmd3"};
+	std::vector<std::string>  output {"bulk: cmd1", ",cmd2"};
 	testInputOutput(input, output, 2);
 }
 
 TEST(gtest_interpret_test1, test_file_bulksize2){
 	std::vector<std::string>  input {"cmd1", "cmd2", "cmd3", "cmd4", "cmd5"};
-	std::vector<std::string>  output {"cmd5"};
+	std::vector<std::string>  output {"bulk: cmd1", ",cmd2", "bulk: cmd3", ",cmd4"};
 	testInputOutput(input, output, 2);
 }
 
 TEST(gtest_interpret_test1, test_file_brackets){
 	std::vector<std::string>  input {"cmd1", "cmd2", "{"};
-	std::vector<std::string>  output {};
+	std::vector<std::string>  output {"bulk: cmd1", ",cmd2"};
 	testInputOutput(input, output);
 }
 
+
 TEST(gtest_interpret_test1, test_file_brackets2){
 	std::vector<std::string>  input {"cmd1", "cmd2", "{", "cmd3", "cmd4" };
-	std::vector<std::string>  output {"cmd3", "cmd4"};
+	std::vector<std::string>  output {"bulk: cmd1", ",cmd2"};
 	testInputOutput(input, output);
 }
 
 TEST(gtest_interpret_test1, test_file_brackets3){
 	std::vector<std::string>  input {"cmd1", "cmd2", "{", "cmd3", "cmd4", "}"};
-	std::vector<std::string>  output {};
+	std::vector<std::string>  output {"bulk: cmd1", ",cmd2", "bulk: cmd3", ",cmd4"};
 	testInputOutput(input, output);
 }
+
 
 int main (int argc, char** argv) {
 	testing::InitGoogleTest(&argc, argv);
