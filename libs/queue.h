@@ -15,11 +15,11 @@ class queueLists
 {
     public:
         queueLists() : m_EOF{false}{};
-        void push(std::shared_ptr<T> line);
-        bool pop(std::shared_ptr<T>& );
+        void push(T line);
+        bool pop(T& );
         void setEOF();
     private:
-        std::deque<std::shared_ptr<T>> m_deque;
+        std::deque<T> m_deque;
         std::mutex m_mutex; 
         std::condition_variable m_cv;
         bool m_EOF; 
@@ -33,7 +33,7 @@ void queueLists<T>::setEOF()
 }
 
 template <typename T>
-void queueLists<T>::push(std::shared_ptr<T> line )
+void queueLists<T>::push(T line )
 {
     std::unique_lock<std::mutex> lock(m_mutex);
     m_deque.push_back(line);
@@ -41,7 +41,7 @@ void queueLists<T>::push(std::shared_ptr<T> line )
 }
 
 template <typename T>
-bool queueLists<T>::pop(std::shared_ptr<T>& line)
+bool queueLists<T>::pop(T& line)
 {
     std::unique_lock<std::mutex> lock(m_mutex);
     while (m_deque.size() == 0 && !m_EOF)
@@ -49,7 +49,7 @@ bool queueLists<T>::pop(std::shared_ptr<T>& line)
             
     if (m_deque.size())
     {
-        line = std::make_shared<T>(std::move(*m_deque.front().get()));
+        line = std::move (m_deque.front());
         m_deque.pop_front();
         return true;
     }

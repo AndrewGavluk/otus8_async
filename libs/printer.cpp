@@ -8,6 +8,6 @@ void Printer::setEOF() {
     m_queue.setEOF(); 
 }
 
-void Printer::print(std::shared_ptr<Bulk> data){
+void Printer::print(Bulk data){
     m_queue.push(data);
 }

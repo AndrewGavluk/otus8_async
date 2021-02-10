@@ -20,6 +20,6 @@ int main(){
     interp.receive(handler2, input1, size1);
 
     interp.disconnect(handler1);
-    interp.disconnect(handler2);
+    //interp.disconnect(handler2);
     return 0;
 }

@@ -21,10 +21,10 @@ void interpreter::print(std::time_t & time)
 {
     std::string stime{std::to_string(time)}; 
     auto bulkPrinter = [this, &stime](std::shared_ptr<Printer> outs){
-         outs->print(std::make_shared<Bulk>(m_block, stime));};
+         outs->print(Bulk{m_block, stime});};
     
     std::for_each(m_outputs.begin(), m_outputs.end(), bulkPrinter);
-    m_block.clear();
+    //m_block.clear();
     time=0;
 }
 
