@@ -10,6 +10,7 @@
 
 struct Bulk
 {
+    Bulk () = default;
     Bulk (std::vector<std::string>& _bulk, std::string& _time) :  bulk{_bulk}, time{_time} {}
     Bulk (Bulk && other){
         std::swap(bulk, other.bulk);
