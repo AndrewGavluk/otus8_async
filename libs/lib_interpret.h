@@ -9,7 +9,6 @@
 
 #include "printer.h"
 #include "ConsolePrinter.h"
-
 #include "tsq.h"
 
 class interpreter
