@@ -30,11 +30,11 @@ void testInputOutput(std::vector<std::string>& input,
 	for (auto &cmd : input)
   		inter1->putString(std::string(cmd));
 
-	std::this_thread::sleep_for (std::chrono::milliseconds(2));	
+	std::this_thread::sleep_for (std::chrono::milliseconds(20));	
 	std::ifstream Tester("Tester");
 	std::string str;
 	std::vector<std::string> result;
-	std::this_thread::sleep_for (std::chrono::milliseconds(2));
+	std::this_thread::sleep_for (std::chrono::milliseconds(20));
 	while (std::getline(Tester, str))
     	if(str.size() > 0)
         	result.push_back(str);	
