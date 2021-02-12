@@ -1,25 +1,26 @@
-#include <stdlib.h>     //for using the function sleep
+#include "../libs/lib_interpret.h" 
+#include "../libs/ConsolePrinter.h" 
+#include "../libs/FilePrinter.h" 
 
-#include "../libs/asyncLib.h"
 
-int main(){
-    assyncLib interp{};
-    size_t size {3};
-    uint64_t handler1{interp.connect(size)};
-    uint64_t handler2{interp.connect(size)};
-    
-    const char *input1 = "cmd01 \ncmd02 \ncmd03 \ncmd04 \n{\ncmd11 \ncmd12 \n{\ncmd22 \n}\ncmd31 \n}\ncmd41 \ncmd42 \ncmd43 \n"; 
-    size_t size1 = 86;
-    const char *input2 = "cmd51 \ncmd52 \ncmd53 \ncmd54 \ncmd55 \n{\ncmd61 \ncmd62 \ncmd63 \n{\ncmd71 \ncmd72 \n}\ncmd81 \n}\ncmd91 \ncmd92 \ncmd93 \n"; 
-    size_t size2 = 107;
-    
-    interp.receive(handler1, input1, size1);
-    interp.receive(handler2, input2, size2);
-    
-    interp.receive(handler1, input2, size2);
-    interp.receive(handler2, input1, size1);
+int main(/*int argc, char** argv*/){
 
-    interp.disconnect(handler1);
-    //interp.disconnect(handler2);
+    /*if (argc < 2)
+    {
+        std::cerr << "Number of arguments < 2.\n";
+        return 1;
+    }
+    interpreter inter1{std::atoi(argv[1])};*/
+    interpreter inter1{3};
+
+    std::shared_ptr<Printer> Console = std::make_shared<ConsolePrinter>(std::cout);
+    
+    std::ofstream FileStream1;
+    std::shared_ptr<Printer> File1 = std::make_shared<FilePrinter>(FileStream1);
+
+    inter1.push_back(Console);
+    inter1.push_back(File1);
+    inter1.processStream(std::cin);
+
     return 0;
 }
