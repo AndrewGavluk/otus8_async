@@ -10,5 +10,5 @@ class FilePrinter : public  Printer
         ~FilePrinter();
         void printThread(size_t threadNumber) override;
     private:
-        std::ofstream m_ofstream;
+        //std::ofstream m_ofstream;
 };

@@ -17,15 +17,20 @@ void FilePrinter::printThread(size_t threadNumber){
     Bulk data;
     std::string separator;
     size_t counter{0};
+    std::ofstream m_ofstream;
+
     while(m_queue.pop(data)){
+        (void) counter;
+        (void) threadNumber;
         m_ofstream.open(data.time + "_thread_" + std::to_string(threadNumber) + "_" + std::to_string(++counter) +".log");
-        separator = "";
+       
+        /**/separator = "";
         m_ofstream << "bulk: ";
         for (auto &str : data.bulk){
             m_ofstream << separator << str << std::endl;
             separator = ",";
         }
 
-        m_ofstream.close();
+        m_ofstream.close();/**/
     }
 }
