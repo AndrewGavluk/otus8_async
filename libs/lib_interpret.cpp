@@ -1,61 +1,41 @@
 #include "lib_interpret.h" 
+/*
+interpreter::interpreter(int size) : m_bulkSize{static_cast<size_t>(size)}{}
 
-interpreter::interpreter(size_t size) : m_bulkSize{size}  {}
-
-interpreter::~interpreter(){
-    if (m_thread.joinable())
-        m_thread.join();
-}
-
-void interpreter::addPrinter(std::shared_ptr<Printer> printer)
+void interpreter::push_back(std::shared_ptr<Printer>& printer)
 {
     m_outputs.push_back(printer);
 }
 
-void interpreter::StartTread()
-{
-    m_thread = std::thread (&interpreter::processStream, std::ref(*this));
-}
-
 void interpreter::print(std::time_t & time)
 {
-    std::string stime{std::to_string(time)}; 
-    auto bulkPrinter = [this, &stime](std::shared_ptr<Printer> outs){
-         outs->print(Bulk{m_block, stime});};
-    
-    std::for_each(m_outputs.begin(), m_outputs.end(), bulkPrinter);
-    //m_block.clear();
+    std::string stime{std::to_string(time)};
+    stime=std::to_string(time);
+        for (auto outs : m_outputs)
+            outs->print( m_block, stime );
+        m_block.clear();
     time=0;
 }
 
-void interpreter::processStream()
+void interpreter::processStream(std::istream& iss)
 {
     size_t level{0};
     std::string input;
     std::time_t time=0;
 
-    std::this_thread::sleep_for (std::chrono::microseconds(100));
-
-    while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
+    while(std::getline(iss, input)){
         if ( input=="{" && level++ ) continue;
-        if ( input=="}" && --level ) continue;
-        if (!time)  time = std::time(nullptr);
+        if ( input=="}" && --level ) continue; 
         
+        if (!time)  time = std::time(nullptr);
+
         if (input=="}" || input=="{")
             print(time);
         
-        else{
-            m_block.push_back(input); 
+        else{// if string is not brackets print block, then push it to block, 
             if(m_block.size() >= m_bulkSize && !level )
                 print(time);
+            m_block.push_back(input); 
         }  
     }
-
-    auto bulkPrintEOF = [](std::shared_ptr<Printer> outs){outs->setEOF();};
-    std::for_each(m_outputs.begin(), m_outputs.end(), bulkPrintEOF);
-}
-
-void interpreter::putString(std::string buf)
-{
-    m_sstrm << buf << std::endl;
-}
+}*/
