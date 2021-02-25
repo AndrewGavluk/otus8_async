@@ -34,7 +34,6 @@ void testInputOutput(std::vector<std::string>& input,
 	std::ifstream Tester("Tester");
 	std::string str;
 	std::vector<std::string> result;
-	//std::this_thread::sleep_for (std::chrono::milliseconds(10));
 	while (std::getline(Tester, str))
     	if(str.size() > 0)
         	result.push_back(str);	
