@@ -34,7 +34,7 @@ void interpreter::processStream()
     std::string input;
     std::time_t time=0;
 
-    std::this_thread::sleep_for (std::chrono::microseconds(100));
+    std::this_thread::sleep_for (std::chrono::microseconds(10));
 
     while(!m_sstrm.eof() && std::getline(m_sstrm, input)){
         if ( input=="{" && level++ ) continue;

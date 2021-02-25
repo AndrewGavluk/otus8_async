@@ -30,16 +30,15 @@ void testInputOutput(std::vector<std::string>& input,
 	for (auto &cmd : input)
   		inter1->putString(std::string(cmd));
 
-	std::this_thread::sleep_for (std::chrono::milliseconds(20));	
+	std::this_thread::sleep_for (std::chrono::milliseconds(10));	
 	std::ifstream Tester("Tester");
 	std::string str;
 	std::vector<std::string> result;
-	std::this_thread::sleep_for (std::chrono::milliseconds(20));
+	//std::this_thread::sleep_for (std::chrono::milliseconds(10));
 	while (std::getline(Tester, str))
     	if(str.size() > 0)
         	result.push_back(str);	
 	ASSERT_EQ( result, output);
-	std::this_thread::sleep_for (std::chrono::milliseconds(1000));
 }
 
 TEST(gtest_interpret_test1, test_file_simple1){
